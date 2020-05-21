@@ -24,7 +24,6 @@ async def on_message(message):
         for channel in message.guild.text_channels:
             textChannels.append(channel)
 
-        print(textChannels)
         userCountDict = {}
         for textChannel in textChannels:
             async for msg in textChannel.history(limit=None):
@@ -65,6 +64,8 @@ def make_autopct(values):
         return '{p:.2f}%\n({v:d})'.format(p=pct, v=val)
     return my_autopct
 
+with open ('conf', 'r') as config:
+    data=config.read()
 
 sns.set_context("paper")
-client.run('NzEzMDE0NDM5MDQ0OTcyNTY1.XsZ_Fw.1dkV_X3GjoBSB6ld6c_rBB0DtAc')
+client.run(data)
