@@ -50,7 +50,7 @@ async def on_message(message):
             values, explode=explode, labels=labels, colors=colors, autopct=make_autopct(values), shadow=True, startangle=140)
         ax1.axis('equal')
         ax1.set_title("User posts made")
-        fig1.savefig('fig.png', dps=100)
+        fig1.savefig('fig.png', dpi=100)
 
         await message.channel.send(file=discord.File('fig.png'))
 
