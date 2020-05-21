@@ -1,7 +1,10 @@
 # DiscordBot_PostGraphs
 A discord bot made to show graphs of a specific servers users post counts.
 
-### How to use
+### Commands
+!graph - displays a pie diagram of total posts made by everyone on the server.
+
+### Installation
 Write the token associated with your bot in the conf file on the first line.
 The following permissions are needed:
 * View Channels
