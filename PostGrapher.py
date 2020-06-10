@@ -20,7 +20,6 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    print(message.content)
     splitMsg = message.content.split()
     if splitMsg[0] == '!graph' and (splitMsg[1] == 'bar' or splitMsg[1] == 'pie'):
         await message.channel.send('Valid arguments! Calculating...')
@@ -55,7 +54,7 @@ async def on_message(message):
  
         if os.path.exists("fig.png"):
             await message.channel.send(file=discord.File('fig.png'))
-            #os.remove('fig.png')
+            os.remove('fig.png')
 
 def make_bar_chart(labels, values, colors):
     x = np.arange(len(labels))
@@ -84,7 +83,6 @@ def autolabel(rects, ax, values):
                     ha='center')
 
 def make_pie_chart(labels, values, colors):
-    print('pie!')
     explode = [0] * len(labels)
     for i, val in enumerate(values):
         total = sum(values)
