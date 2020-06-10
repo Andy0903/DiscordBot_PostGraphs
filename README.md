@@ -2,7 +2,9 @@
 A discord bot made to show graphs of a specific servers users post counts.
 
 ### Commands
-!graph - displays a pie diagram of total posts made by everyone on the server.
+* !graph pie - displays a pie diagram of total posts made by everyone on the server.
+* !graph bar - displays a bar diagram of total posts made by everyone on the server.
+* Optional command - An integer can follow after a whitespace to specify the max number of users to appear in the graph in the following manner: !graph bar 10
 
 ### Installation
 Write the token associated with your bot in the conf file on the first line.
