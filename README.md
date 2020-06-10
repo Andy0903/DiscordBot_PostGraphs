@@ -14,4 +14,7 @@ The following permissions are needed:
 * Attach Files
 * Read Message History
 
+##### Note
+If there are channels that require specific permissions to be seen the bot will need those permissions as well, otherwise it will get request denied when trying to look at the past messages of said channel.
+
 ###### Token secrecy: Keep in mind that the token of your bot is secret. The token that can be seen in the commit log is invalid and served as an example at an earlier stage in the development. 
