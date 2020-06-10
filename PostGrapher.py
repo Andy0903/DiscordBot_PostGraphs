@@ -4,11 +4,11 @@ import os
 import seaborn as sns
 import numpy as np
 import random as r
-from collections import OrderedDict
+from collections import Counter, OrderedDict
+import itertools
 
 client = discord.Client()
-startCmd = '!graph'
-
+figsize = (10,10)
 
 @client.event
 async def on_ready():
@@ -20,8 +20,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith(startCmd):
-        await message.channel.send('Calculating... valid arguments are \'bar\' or \'pie\'.')
+    print(message.content)
+    splitMsg = message.content.split()
+    if splitMsg[0] == '!graph' and (splitMsg[1] == 'bar' or splitMsg[1] == 'pie'):
+        await message.channel.send('Valid arguments! Calculating...')
 
         textChannels = []
         for channel in message.guild.text_channels:
@@ -34,28 +36,31 @@ async def on_message(message):
                     key = msg.author.name + '#' + msg.author.discriminator
                     userCountDict[key] = userCountDict.get(key, 0) + 1
 
-        orderedDict = OrderedDict(
-            sorted(userCountDict.items(), key=lambda x: x[1]))
+        cntSize = len(userCountDict)
+        if (len(splitMsg) > 2 and splitMsg[2].isdigit()):
+            cntSize = max(1, int(splitMsg[2]))
 
-        labels = list(orderedDict.keys())
-        values = list(orderedDict.values())
+        cnt = dict(Counter(userCountDict).most_common(cntSize))
+
+        labels = list(cnt.keys())
+        values = list(cnt.values())
         colors = sns.color_palette(sns.palplot(sns.husl_palette(len(labels), s=.4)))
 
-        if message.content.startswith('bar', len(startCmd) + 1):
+        if splitMsg[1] == 'bar':
             make_bar_chart(labels, values, colors)
-        elif message.content.startswith('pie', len(startCmd) + 1):
+        elif splitMsg[1] == 'pie':
             make_pie_chart(labels, values, colors)
         else:
             await message.channel.send('Unknown argument. Stopping.')
  
         if os.path.exists("fig.png"):
             await message.channel.send(file=discord.File('fig.png'))
-            os.remove('fig.png')
+            #os.remove('fig.png')
 
 def make_bar_chart(labels, values, colors):
     x = np.arange(len(labels))
     width = 0.1
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=figsize)
     rects = ax.bar(x, values, width, color=colors[r.randint(0, len(colors) - 1)], edgecolor=colors[r.randint(0, len(colors) - 1)])
     ax.set_ylabel('Number of posts')
     ax.set_title('User posts made')
@@ -86,7 +91,7 @@ def make_pie_chart(labels, values, colors):
         fracture = val/total
         explode[i] = max(0, 1 - (fracture * 7));
 
-        fig1, ax1 = plt.subplots(figsize=(10, 10))
+        fig1, ax1 = plt.subplots(figsize=figsize)
         wedges, texts, autotexts = ax1.pie(
             values, explode=explode, labels=labels, colors=colors, autopct=make_autopct(values), shadow=True, startangle=140)
         ax1.axis('equal')
